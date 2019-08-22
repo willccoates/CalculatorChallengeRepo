@@ -177,6 +177,24 @@ namespace ChallengeCalculatorTests
             Assert.IsTrue(output.All(c.Convert(inputValues).Contains));
 
         }
+
+        [TestMethod]
+        public void InputsGreaterThanOneThousandTest()
+        {
+            Calculator c = new Calculator();
+            string input = "1,1005,5,3";
+            int result = c.Begin(input);
+            Assert.IsTrue(result == 9);
+        }
+
+        [TestMethod]
+        public void InputsGreaterThanOneThousand2Test()
+        {
+            Calculator c = new Calculator();
+            string input = "1001,1005,2000,5000";
+            int result = c.Begin(input);
+            Assert.IsTrue(result == 0);
+        }
     }
 
     [TestClass]

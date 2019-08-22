@@ -38,7 +38,7 @@ namespace ChallengeCalculator
                 // Checks if the string value at index i is a integer
                 // if it is an integer, it adds the integer to the 
                 //integer list.
-                if (Int32.TryParse(strValues[i], out temp))
+                if (Int32.TryParse(strValues[i], out temp) && temp <= 1000)
                 {
                     // Checks for negative numbers in the string values. If negative is found
                     // it is inserted into the negativeNumbers list.
