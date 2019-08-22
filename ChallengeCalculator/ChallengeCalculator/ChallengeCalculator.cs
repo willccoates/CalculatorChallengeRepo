@@ -67,6 +67,7 @@ namespace ChallengeCalculator
         //
         // Begin method runs the main loop of the calculator program. Receiving the input 
         // from the user, parsing the input and calling the Convert and Addition methods.
+        // Begin accepts more than two inputs from the user.
         //
         public void Begin()
         {
@@ -76,11 +77,6 @@ namespace ChallengeCalculator
                 input = Console.ReadLine();
                 Console.WriteLine("You entered '{0}'", input);
                 string[] values = input.Split(',');
-                if (values.Length > 2)
-                {
-                    Console.WriteLine("You can only enter 2 numbers!");
-                    continue;
-                }
                 List<int> integers = Convert(values);
                 Console.WriteLine(Addition(integers));
             }

@@ -48,6 +48,27 @@ namespace ChallengeCalculatorTests
             var result = c.Addition(values);
             Assert.IsTrue(result == 25);
         }
+
+        //
+        // Tests correct inputs into the addition method more than 2 inputs
+        // values = {25, 5, 30, 20}
+        // Addition(values) = 30
+        // tested against 30 to ensure Addition method successfully 
+        // adds the two values together.
+        //
+        [TestMethod]
+        public void MoreThanTwoNumbersInputTest()
+        {
+            List<int> values = new List<int>();
+            values.Add(25);
+            values.Add(5);
+            values.Add(30);
+            values.Add(20);
+            Calculator c = new Calculator();
+            var result = c.Addition(values);
+            Assert.IsTrue(result == 80);
+        }
+
     }
 
     //
@@ -113,5 +134,47 @@ namespace ChallengeCalculatorTests
             Assert.IsTrue(output.All(c.Convert(inputValues).Contains));
         }
 
+        //
+        // Tests for a successful conversion from strings to integers for more than two inputs
+        // inputValues = { "1", "2", "3", "4" }
+        // output to compare to = { 1, 2, 3, 4 }
+        // method measures true if the converted inputvalues
+        // are contained withing the output list.
+        //
+        [TestMethod]
+        public void MoreThanTwoNumbersConvertTest()
+        {
+            Calculator c = new Calculator();
+            string[] inputValues = { "1", "2", "3", "4" };
+            List<int> output = new List<int>();
+            output.Add(1);
+            output.Add(2);
+            output.Add(3);
+            output.Add(4);
+            Assert.IsTrue(output.All(c.Convert(inputValues).Contains));
+
+        }
+
+        //
+        // Tests for a successful conversion from strings to integers for more than two inputs
+        // including invalid inputs such as strings.
+        // inputValues = { "1", "xyz", "hello", "world" }
+        // output to compare to = { 1, 0, 0, 0 }
+        // method measures true if the converted inputvalues
+        // are contained withing the output list.
+        //
+        [TestMethod]
+        public void MoreThanTwoNumbersInvalidInputConvertTest()
+        {
+            Calculator c = new Calculator();
+            string[] inputValues = { "1", "xyz", "hello", "world" };
+            List<int> output = new List<int>();
+            output.Add(1);
+            output.Add(0);
+            output.Add(0);
+            output.Add(0);
+            Assert.IsTrue(output.All(c.Convert(inputValues).Contains));
+
+        }
     }
 }
