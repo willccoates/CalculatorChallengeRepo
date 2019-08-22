@@ -300,6 +300,51 @@ namespace ChallengeCalculatorTests
             //Console.WriteLine(result);
             Assert.IsTrue(result == 180);
         }
+
+        //
+        // Tests the use of  multiple custom delimiter of any length.
+        // The testcase tests that the custom delimiter of any length works successfully when 
+        // used in the input string.
+        //
+        [TestMethod]
+        public void MultipleCustomDelimiterAnyLengthTest()
+        {
+            Calculator c = new Calculator();
+            string input = "//[!][##][$$$]\\n5!10##15$$$20";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 50);
+        }
+
+        //
+        // Tests the mixture of the comma, newline and multiple custom delimiter's of any length.
+        // The testcase tests that the custom delimiter of any length works successfully when mixed 
+        // with the other delimiter options.
+        //
+        [TestMethod]
+        public void MultipleCustomDelimiterAnyLength2Test()
+        {
+            Calculator c = new Calculator();
+            string input = "//[!][##][$$$]\\n5!10##15$$$20\\n25,30";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 105);
+        }
+
+        //
+        // Tests the mixture of the comma, newline and multiple custom delimiter's of any length.
+        // The testcase tests that the custom delimiter of any length works successfully when mixed 
+        // with the other delimiter options.
+        //
+        [TestMethod]
+        public void MultipleCustomDelimiterAnyLength3Test()
+        {
+            Calculator c = new Calculator();
+            string input = "//[!][##][$$$]\\n5!10##15$$$20\\n25,30##2000";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 105);
+        }
     }
 
     //

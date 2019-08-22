@@ -36,12 +36,9 @@ namespace ChallengeCalculator
             for (int i = 0; i < strValues.Length; i++)
             {
                 // Checks if the string value at index i is a integer
-                // if it is an integer, it adds the integer to the 
-                //integer list.
                 if (Int32.TryParse(strValues[i], out temp) && temp <= 1000)
                 {
-                    // Checks for negative numbers in the string values. If negative is found
-                    // it is inserted into the negativeNumbers list.
+                    // Checks for negative numbers in the string values.
                     if (temp < 0)
                     {
                         negativeNumbers.Add(temp);
@@ -101,25 +98,62 @@ namespace ChallengeCalculator
         //
         public int Begin(string userIn)
         {
-            string delimiter = "";
+            string trimmedInput = "";
+            string customDelimiter = "";
+            List<string> delimiter = new List<string>();
+            
+            // checks if custom delimiter is used
             if(userIn.Length != 0 && userIn[0] == '/')
             {
-                string trimmedInput = userIn.Trim('/');
-                if (trimmedInput[0] == '[')
+                trimmedInput = userIn.Trim('/');
+                // checks if custom, any length delimiter is present.
+                if(trimmedInput[0] != '[')
                 {
-                    int endBracket = trimmedInput.IndexOf(']', 0);
-                    for (int i = 1; i < endBracket; i++)
-                    {
-                        delimiter += trimmedInput[i];
-                    }
+                    delimiter.Add(trimmedInput[0].ToString());
                 }
                 else
                 {
-                    delimiter = trimmedInput[0].ToString();
+                    while (trimmedInput[0] != '[' || trimmedInput[0] != ']')
+                    {
+                        if (trimmedInput[0] == '[')
+                        {
+                            int endBracket = trimmedInput.IndexOf(']');
+                            for (int i = 1; i < endBracket; i++)
+                            {
+                                customDelimiter += trimmedInput[i];
+                            }
+                            delimiter.Add(customDelimiter);
+                            trimmedInput = trimmedInput.Remove(0, endBracket + 1);
+                            customDelimiter = "";
+                        }
+                        else
+                        {
+                            if (trimmedInput[0] == '\\')
+                            {
+                                break;
+                            }
+                        }
+                    }
                 }
             }
-            // adds the option to filter based off the delimiter's "," and "\n"
-            var values = userIn.Split(new string[] {",", "\\n", "//", delimiter.ToString() }, StringSplitOptions.None);
+            // standard delimiter is used ( ',', '\n' )
+            else
+            {
+                trimmedInput = userIn;
+            }
+
+            // array of delimiters to use to split the user input into just the numbers inputted.
+            string[] splitDelimiterArray = new string[3 + delimiter.Count];
+            splitDelimiterArray[0] = ",";
+            splitDelimiterArray[1] = "\\n";
+            splitDelimiterArray[2] = "//";
+            for(int i = 3; i < delimiter.Count +3; i++)
+            {
+                splitDelimiterArray[i] = delimiter[i - 3];
+            }
+
+            // adds the option to filter based off the delimiter's ",", "\n" and custom delimiter's
+            var values = trimmedInput.Split(splitDelimiterArray, StringSplitOptions.None);
             List<int> integers = new List<int>();
 
             // Trys to invoke the Convert and Addition methods on the user input.
@@ -163,6 +197,8 @@ namespace ChallengeCalculator
     }
 }
 
+// Exception class which allows the ability to throw a custom exception that relates 
+// to negative inputs.
 public class NegativeNumberException : Exception
 {
     public NegativeNumberException(string message) : base(message)
