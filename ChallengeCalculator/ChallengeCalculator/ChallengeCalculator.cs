@@ -101,11 +101,22 @@ namespace ChallengeCalculator
         //
         public int Begin(string userIn)
         {
-            char delimiter = '\0';
+            string delimiter = "";
             if(userIn.Length != 0 && userIn[0] == '/')
             {
                 string trimmedInput = userIn.Trim('/');
-                delimiter = trimmedInput[0];
+                if (trimmedInput[0] == '[')
+                {
+                    int endBracket = trimmedInput.IndexOf(']', 0);
+                    for (int i = 1; i < endBracket; i++)
+                    {
+                        delimiter += trimmedInput[i];
+                    }
+                }
+                else
+                {
+                    delimiter = trimmedInput[0].ToString();
+                }
             }
             // adds the option to filter based off the delimiter's "," and "\n"
             var values = userIn.Split(new string[] {",", "\\n", "//", delimiter.ToString() }, StringSplitOptions.None);

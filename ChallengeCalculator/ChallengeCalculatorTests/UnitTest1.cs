@@ -270,6 +270,36 @@ namespace ChallengeCalculatorTests
             //Console.WriteLine(result);
             Assert.IsTrue(result == 180);
         }
+
+        //
+        // Tests the use of a custom delimiter of any length.
+        // The testcase tests that the custom delimiter of any length works successfully when 
+        // used in the input string.
+        //
+        [TestMethod]
+        public void CustomDelimiterAnyLengthTest()
+        {
+            Calculator c = new Calculator();
+            string input = "//[!!!]\\n5!!!25!!!20!!!50";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 100);
+        }
+
+        //
+        // Tests the mixture of the comma, newline and custom delimiter's of any length.
+        // The testcase tests that the custom delimiter of any length works successfully when mixed 
+        // with the other delimiter options.
+        //
+        [TestMethod]
+        public void CustomDelimiterAnyLength2Test()
+        {
+            Calculator c = new Calculator();
+            string input = "//[rrr]\\n5rrr25,30rrr50\\n70";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 180);
+        }
     }
 
     //
