@@ -228,7 +228,7 @@ namespace ChallengeCalculatorTests
         //
         // Tests the mixture of the comma and newline delimiter's "\n".
         // The testcase has the double slashes to represent the string literal version of '\n' which is
-        // "\\n". When entered through the console, the user enters "1\\n2,n3". The "\\n" is entered for testing
+        // "\\n". When entered through the console, the user enters "1\n2\n3". The "\\n" is entered for testing
         // purposes as it relates to the console input.
         //
         [TestMethod]
@@ -239,6 +239,36 @@ namespace ChallengeCalculatorTests
             int result = c.Begin(input);
             //Console.WriteLine(result);
             Assert.IsTrue(result == 6);
+        }
+
+        //
+        // Tests the use of a single custom delimiter.
+        // The testcase tests that the custom delimiter works successfully when 
+        // used in the input string.
+        //
+        [TestMethod]
+        public void CustomDelimiterTest()
+        {
+            Calculator c = new Calculator();
+            string input = "//;\n5;10;20";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 35);
+        }
+
+        //
+        // Tests the mixture of the comma, newline and single custom delimiter's.
+        // The testcase tests that the custom delimiter works successfully when mixed 
+        // with the other delimiter options.
+        //
+        [TestMethod]
+        public void CustomDelimiter2Test()
+        {
+            Calculator c = new Calculator();
+            string input = "//!\n5!25!30,50\\n70";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 180);
         }
     }
 

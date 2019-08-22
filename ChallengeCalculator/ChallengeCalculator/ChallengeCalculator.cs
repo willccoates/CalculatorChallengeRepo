@@ -100,9 +100,15 @@ namespace ChallengeCalculator
         // returns: an Int representing the result of the addition.
         //
         public int Begin(string userIn)
-        { 
+        {
+            char delimiter = '\0';
+            if(userIn.Length != 0 && userIn[0] == '/')
+            {
+                string trimmedInput = userIn.Trim('/');
+                delimiter = trimmedInput[0];
+            }
             // adds the option to filter based off the delimiter's "," and "\n"
-            var values = userIn.Split(new string[] {",", "\\n" }, StringSplitOptions.None);
+            var values = userIn.Split(new string[] {",", "\\n", "//", delimiter.ToString() }, StringSplitOptions.None);
             List<int> integers = new List<int>();
 
             // Trys to invoke the Convert and Addition methods on the user input.
