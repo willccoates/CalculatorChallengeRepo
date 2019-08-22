@@ -223,4 +223,57 @@ namespace ChallengeCalculatorTests
             Assert.IsTrue(result == 6);
         }
     }
+
+    //
+    // Tests the input of negative numbers into the calculator and checking if an exception is thrown
+    //
+    [TestClass]
+    public class NegativeInputTests
+    {
+
+        //
+        // Tests to ensure the exception is thrown when negative numbers are thrown.
+        //
+        [TestMethod]
+        public void NegativeInputExceptionTest()
+        {
+            Calculator c = new Calculator();
+            Exception expectedException = null;
+            string input = "-1,5,-35,-4";
+            try
+            {
+                int result = c.Begin(input);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                expectedException = ex;
+            }
+
+            Assert.IsNotNull(expectedException);
+        }
+
+        //
+        // Tests to ensure the exception is thrown when negative numbers are thrown.
+        // This test uses the different delimiters to test their functionality.
+        //
+        [TestMethod]
+        public void NegativeInputException2Test()
+        {
+            Calculator c = new Calculator();
+            Exception expectedException = null;
+            string input = "-1\n5,-35,-4\ntytyt";
+            try
+            {
+                int result = c.Begin(input);
+                Assert.Fail();
+            }
+            catch (Exception ex)
+            {
+                expectedException = ex;
+            }
+
+            Assert.IsNotNull(expectedException);
+        }
+    }
 }

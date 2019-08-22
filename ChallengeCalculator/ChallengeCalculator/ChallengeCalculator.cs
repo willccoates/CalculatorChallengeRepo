@@ -31,6 +31,7 @@ namespace ChallengeCalculator
         public List<int> Convert(string[] strValues)
         {
             List<int> integers = new List<int>();
+            List<int> negativeNumbers = new List<int>();
             int temp;
             for (int i = 0; i < strValues.Length; i++)
             {
@@ -39,8 +40,18 @@ namespace ChallengeCalculator
                 //integer list.
                 if (Int32.TryParse(strValues[i], out temp))
                 {
-                    integers.Add(temp);
-                    temp = 0;
+                    // Checks for negative numbers in the string values. If negative is found
+                    // it is inserted into the negativeNumbers list.
+                    if (temp < 0)
+                    {
+                        negativeNumbers.Add(temp);
+                    }
+                    
+                    // Positive numbers are accepted and inserted into the integers list.
+                    else
+                    {
+                        integers.Add(temp);
+                    }
                 }
 
                 // otherwise, a 0 is added to the integers list to meet 
@@ -48,8 +59,8 @@ namespace ChallengeCalculator
                 else
                 {
                     integers.Add(0);
-                    temp = 0;
                 }
+                temp = 0;
             }
 
             // checks if only one number was inputted into the calculator,
@@ -59,7 +70,26 @@ namespace ChallengeCalculator
             {
                 integers.Add(0);
             }
-            return integers;
+
+            // Entered if the user did not enter any negative numbers
+            if (negativeNumbers.Count == 0)
+            {
+                return integers;
+            }
+
+            // Entered if the user enters any negative number.
+            // A exception is then thrown stating "The following inputs are not valid: "
+            // and listing the negative numbers entered by the user in a formatted list.
+            else
+            {
+                string message = "The following inputs are not valid: ";
+                for (int i = 0; i < negativeNumbers.Count; i++)
+                {
+                    string val = negativeNumbers[i].ToString() + ", ";
+                    message += val;
+                }
+                throw (new NegativeNumberException(message.Trim(new Char[] { ' ', ',' }) + "."));
+            }
         }
 
         //
@@ -73,10 +103,25 @@ namespace ChallengeCalculator
         { 
             // adds the option to filter based off the delimiter's "," and "\n"
             var values = userIn.Split(new string[] {",", "\\n" }, StringSplitOptions.None);
-            List<int> integers = Convert(values);
-            int result = Addition(integers);
-            Console.WriteLine(result);
-            return result;
+            List<int> integers = new List<int>();
+
+            // Trys to invoke the Convert and Addition methods on the user input.
+            // If no negative numbers are found, the try block is successful and returns the Addition result.
+            // Otherwise, the catch block is entered.
+            try
+            {
+                integers = Convert(values);
+                int result = Addition(integers);
+                Console.WriteLine(result);
+                return result;
+            }
+
+            // The catch block catches the exception and displays it to the user.
+            catch (NegativeNumberException ex)
+            {
+                Console.WriteLine(ex);
+                return 0;
+            }
         }
 
         //
@@ -97,5 +142,13 @@ namespace ChallengeCalculator
                 history.Add(c.Begin(input));
             }
         }
+
+    }
+}
+
+public class NegativeNumberException : Exception
+{
+    public NegativeNumberException(string message) : base(message)
+    {
     }
 }
