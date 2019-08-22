@@ -6,8 +6,6 @@ namespace ChallengeCalculator
     public class Calculator
     {
 
-        string input;
-
         //
         // Addition method takes in a list of integers inputted by the user
         // and adds all of the integers together.
@@ -65,27 +63,39 @@ namespace ChallengeCalculator
         }
 
         //
-        // Begin method runs the main loop of the calculator program. Receiving the input 
-        // from the user, parsing the input and calling the Convert and Addition methods.
-        // Begin accepts more than two inputs from the user.
+        // Begin method receives the user input from the Main method. Begin then splits that input
+        // based on the delimiters outlined by requirements 1 and 3 ( ",", "\\n" ).
+        // Begin then converts the split string into integers by invoking the Convert method.
+        // Once converted, the Begin method invokes the Addition method.
+        // returns: an Int representing the result of the addition.
         //
-        public void Begin()
+        public int Begin(string userIn)
+        { 
+            // adds the option to filter based off the delimiter's "," and "\n"
+            var values = userIn.Split(new string[] {",", "\\n" }, StringSplitOptions.None);
+            List<int> integers = Convert(values);
+            int result = Addition(integers);
+            Console.WriteLine(result);
+            return result;
+        }
+
+        //
+        // The Main method controls the main loop of the calculator to accept input until the command 
+        // "CTR + C" is used to exit the program.
+        // The Main method takes the user input through console write's and read's and invokes the Begin method.
+        //
+        public static void Main(string[] args)
         {
+            Calculator c = new Calculator();
+            string input = "";
+            List<int> history = new List<int>();
             while (input != "^c")
             {
                 Console.Write("Enter numbers to be added (seperated by ','): ");
                 input = Console.ReadLine();
                 Console.WriteLine("You entered '{0}'", input);
-                string[] values = input.Split(',');
-                List<int> integers = Convert(values);
-                Console.WriteLine(Addition(integers));
+                history.Add(c.Begin(input));
             }
-        }
-
-        public static void Main(string[] args)
-        {
-            Calculator c = new Calculator();
-            c.Begin();
         }
     }
 }

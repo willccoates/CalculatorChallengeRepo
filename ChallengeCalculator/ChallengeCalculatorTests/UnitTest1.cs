@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChallengeCalculator;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace ChallengeCalculatorTests
 {
@@ -175,6 +176,51 @@ namespace ChallengeCalculatorTests
             output.Add(0);
             Assert.IsTrue(output.All(c.Convert(inputValues).Contains));
 
+        }
+    }
+
+    [TestClass]
+    public class DifferentDelimiterTests
+    {
+        //
+        // Tests basic delimiter "," which should be working as per previous requirements
+        //
+        [TestMethod]
+        public void CommaDelimiterTest()
+        {
+            Calculator c = new Calculator();
+            int result = c.Begin("1,2,3");
+            Assert.IsTrue(result == 6);
+        }
+
+        //
+        // Tests the newline delimiter "\n".
+        // The testcase has the double slashes to represent the string literal version of '\n' which is
+        // "\\n". When entered through the console, the user enters "1\n2\n3". The "\\n" is entered for testing
+        // purposes as it relates to the console input.
+        //
+        [TestMethod]
+        public void NewLineDelimiterTest()
+        {
+            Calculator c = new Calculator();
+            int result = c.Begin("1\\n2\\n3");
+            Assert.IsTrue(result == 6);
+        }
+
+        //
+        // Tests the mixture of the comma and newline delimiter's "\n".
+        // The testcase has the double slashes to represent the string literal version of '\n' which is
+        // "\\n". When entered through the console, the user enters "1\\n2,n3". The "\\n" is entered for testing
+        // purposes as it relates to the console input.
+        //
+        [TestMethod]
+        public void MixedDelimiterTest()
+        {
+            Calculator c = new Calculator();
+            string input = "1\\n2,3";
+            int result = c.Begin(input);
+            //Console.WriteLine(result);
+            Assert.IsTrue(result == 6);
         }
     }
 }
