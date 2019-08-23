@@ -28,6 +28,10 @@ $ csc ChallengeCalculator.cs
 ```
 $ ChallengeCalculator
 ```
+## Exiting the program
+
+The program can be terminated during run time by entering the keyword ```"exit"``` as input.
+
 
 ## Requirements Implemented
 
