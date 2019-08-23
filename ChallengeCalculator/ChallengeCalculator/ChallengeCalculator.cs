@@ -6,11 +6,12 @@ namespace ChallengeCalculator
     public class Calculator
     {
 
-        //
-        // Addition method takes in a list of integers inputted by the user
-        // and adds all of the integers together.
-        // returns: an integer representing the sum of the input.
-        //
+        /// <summary>
+        /// Addition method takes in a list of integers inputted by the user
+        /// and adds all of the integers together.
+        /// </summary>
+        /// <param name="opperands"></param>
+        /// <returns> an integer representing the sum of the input. </returns>
         public int Addition(List<int> opperands)
         {
             int sum = 0;
@@ -21,13 +22,14 @@ namespace ChallengeCalculator
             return sum;
         }
 
-        //
-        // Convert function takes in the split up string taken from the
-        // the user input at command line in the form of a string array.
-        // Checks each substring for integers to be added, then converting
-        // the strings to integers and putting them into an integer list.
-        // returns: List<int> object.
-        //
+        /// <summary>
+        /// Convert function takes in the split up string taken from the
+        /// the user input at command line in the form of a string array.
+        /// Checks each substring for integers to be added, then converting
+        /// the strings to integers and putting them into an integer list.
+        /// </summary>
+        /// <param name="strValues"></param>
+        /// <returns> List<int> object </int></returns>
         public List<int> Convert(string[] strValues)
         {
             List<int> integers = new List<int>();
@@ -36,23 +38,19 @@ namespace ChallengeCalculator
             for (int i = 0; i < strValues.Length; i++)
             {
                 // Checks if the string value at index i is a integer
+                // and if the integer is <= 1000
                 if (Int32.TryParse(strValues[i], out temp) && temp <= 1000)
                 {
-                    // Checks for negative numbers in the string values.
                     if (temp < 0)
                     {
                         negativeNumbers.Add(temp);
                     }
-                    
-                    // Positive numbers are accepted and inserted into the integers list.
                     else
                     {
                         integers.Add(temp);
                     }
                 }
-
-                // otherwise, a 0 is added to the integers list to meet 
-                // the requirement of incorrect input such as characters, etc.
+                // add 0 instead of invalid input.
                 else
                 {
                     integers.Add(0);
@@ -68,15 +66,10 @@ namespace ChallengeCalculator
                 integers.Add(0);
             }
 
-            // Entered if the user did not enter any negative numbers
             if (negativeNumbers.Count == 0)
             {
                 return integers;
             }
-
-            // Entered if the user enters any negative number.
-            // A exception is then thrown stating "The following inputs are not valid: "
-            // and listing the negative numbers entered by the user in a formatted list.
             else
             {
                 string message = "The following inputs are not valid: ";
@@ -89,14 +82,16 @@ namespace ChallengeCalculator
             }
         }
 
-        //
-        // Begin method receives the user input from the Main method. Begin then splits that input
-        // based on the delimiters outlined by requirements 1 and 3 ( ",", "\\n" ).
-        // Begin then converts the split string into integers by invoking the Convert method.
-        // Once converted, the Begin method invokes the Addition method.
-        // returns: an Int representing the result of the addition.
-        //
-        public int Begin(string userIn)
+
+        /// <summary>
+        /// Begin method receives the user input from the Main method. Begin then splits that input
+        /// based on the delimiters outlined by requirements 1 and 3 ( ",", "\\n" ).
+        /// Begin then converts the split string into integers by invoking the Convert method.
+        /// Once converted, the Begin method invokes the Addition method.
+        /// </summary>
+        /// <param name="userIn"></param>
+        /// <returns> Integer representing the result of the Addition method.</returns>
+        public int Parse(string userIn)
         {
             string trimmedInput = "";
             string customDelimiter = "";
@@ -152,13 +147,8 @@ namespace ChallengeCalculator
                 splitDelimiterArray[i] = delimiter[i - 3];
             }
 
-            // adds the option to filter based off the delimiter's ",", "\n" and custom delimiter's
             var values = trimmedInput.Split(splitDelimiterArray, StringSplitOptions.None);
             List<int> integers = new List<int>();
-
-            // Trys to invoke the Convert and Addition methods on the user input.
-            // If no negative numbers are found, the try block is successful and returns the Addition result.
-            // Otherwise, the catch block is entered.
             try
             {
                 integers = Convert(values);
@@ -167,7 +157,7 @@ namespace ChallengeCalculator
                 return result;
             }
 
-            // The catch block catches the exception and displays it to the user.
+            // The catch block catches the exception for negative numbers inputted.
             catch (NegativeNumberException ex)
             {
                 Console.WriteLine(ex);
@@ -175,30 +165,41 @@ namespace ChallengeCalculator
             }
         }
 
-        //
-        // The Main method controls the main loop of the calculator to accept input until the command 
-        // "CTR + C" is used to exit the program.
-        // The Main method takes the user input through console write's and read's and invokes the Begin method.
-        //
+        /// <summary>
+        /// The Main method controls the main loop of the calculator to accept input until the command 
+        /// "CTR + C" is used to exit the program.
+        /// The Main method takes the user input through console write's and read's and invokes the Begin method.
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             Calculator c = new Calculator();
             string input = "";
             List<int> history = new List<int>();
-            while (input != "^c")
+            while (true)
             {
-                Console.Write("Enter numbers to be added (seperated by ','): ");
+                Console.Write("Enter numbers to be added: ");
                 input = Console.ReadLine();
-                Console.WriteLine("You entered '{0}'", input);
-                history.Add(c.Begin(input));
+                if (input == "exit")
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("You entered '{0}'", input);
+                    history.Add(c.Parse(input));
+                }
             }
         }
 
     }
 }
 
-// Exception class which allows the ability to throw a custom exception that relates 
-// to negative inputs.
+
+/// <summary>
+/// Exception class which allows the ability to throw a custom exception that relates 
+/// to negative inputs.
+/// </summary>
 public class NegativeNumberException : Exception
 {
     public NegativeNumberException(string message) : base(message)
